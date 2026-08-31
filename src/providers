@@ -1,0 +1,7 @@
+const getUserToken = () => {
+  const userToken = $cookies.get("userToken");
+
+  return userToken;
+};
+
+export { getUserToken };
