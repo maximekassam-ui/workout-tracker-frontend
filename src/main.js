@@ -5,6 +5,12 @@ import router from "./router";
 import { getUserToken } from "./providers";
 
 import VueCookies from "vue-cookies";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+import { faWindowMinimize } from "@fortawesome/free-solid-svg-icons";
+
+library.add(faWindowMinimize);
 
 const app = createApp(App);
 
@@ -18,4 +24,4 @@ const currentWorkout = ref(null);
 
 app.provide("GlobalStore", { userToken: userToken, currentWorkout });
 
-app.mount("#app");
+app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");
