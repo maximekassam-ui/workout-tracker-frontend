@@ -4,6 +4,8 @@ import { getCurrentWorkout } from "../services/api";
 import axios from "axios";
 import { API_URL } from "../services/api";
 
+import BtnWorkoutCancel from "../components/BtnWorkoutCancel.vue";
+
 const GlobalStore = inject("GlobalStore");
 const currentWorkout = GlobalStore.currentWorkout;
 
@@ -12,15 +14,24 @@ const load = ref(0);
 const completed = ref(true);
 const errorMessage = ref("");
 const isSubmiting = ref(false);
+const isLoading = ref(true);
 
 onMounted(async () => {
   try {
     const response = await getCurrentWorkout(GlobalStore.userToken.value);
 
-    GlobalStore.currentWorkout.value = response;
-    // console.log(response);
+    if (response) {
+      GlobalStore.currentWorkout.value = response;
+      console.log(">>>>>>>", GlobalStore.currentWorkout.value.workout);
+      if (GlobalStore.currentWorkout.value.previousSets.length > 0) {
+        reps.value = GlobalStore.currentWorkout.value.previousSets[0].reps;
+        load.value = GlobalStore.currentWorkout.value.previousSets[0].load;
+      }
+    }
   } catch (error) {
     console.log(error.message);
+  } finally {
+    isLoading.value = false;
   }
 });
 
@@ -34,7 +45,7 @@ const handleSet = async () => {
   ) {
     errorMessage.value = "Vous avez déjà effectué toutes vos séries";
   } else {
-    if (reps.value === 0 || load.value === 0) {
+    if (!reps.value || !load.value) {
       errorMessage.value = "Veuillez remplir tous les champs";
     } else {
       try {
@@ -62,15 +73,123 @@ const handleSet = async () => {
         console.log(">>>>>>>>", data);
         GlobalStore.currentWorkout.value.pendingWorkoutExercise.sets.push(data);
 
-        reps.value = 0;
-        load.value = 0;
+        console.log(
+          GlobalStore.currentWorkout.value.pendingWorkoutExercise.sets,
+        );
+
+        if (
+          GlobalStore.currentWorkout.value.previousSets[
+            GlobalStore.currentWorkout.value.pendingWorkoutExercise.sets.length
+          ]
+        ) {
+          reps.value =
+            GlobalStore.currentWorkout.value.previousSets[
+              GlobalStore.currentWorkout.value.pendingWorkoutExercise.sets.length
+            ].reps;
+          load.value =
+            GlobalStore.currentWorkout.value.previousSets[
+              GlobalStore.currentWorkout.value.pendingWorkoutExercise.sets.length
+            ].load;
+        } else {
+          reps.value = 0;
+          load.value = 0;
+        }
+
         errorMessage.value = "";
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+  isSubmiting.value = false;
+};
+
+const handleExerciseComplete = async () => {
+  try {
+    const { data } = await axios.put(
+      `${API_URL}/api/workout-exercises/${GlobalStore.currentWorkout.value.pendingWorkoutExercise.documentId}`,
+
+      { execution_status: "COMPLETED" },
+
+      { headers: { Authorization: `Bearer ${GlobalStore.userToken.value}` } },
+    );
+
+    // console.log(data);
+
+    // console.log(">>", GlobalStore.currentWorkout.value.WorkoutExercises);
+
+    GlobalStore.currentWorkout.value.pendingWorkoutExercise.execution_status =
+      data.execution_status;
+
+    const completedExercise =
+      GlobalStore.currentWorkout.value.WorkoutExercises.find(
+        (workoutExercise) =>
+          GlobalStore.currentWorkout.value.pendingWorkoutExercise.documentId ===
+          workoutExercise.documentId,
+      );
+
+    // console.log(completedExercise);
+
+    completedExercise.execution_status = data.execution_status;
+
+    const response = await getCurrentWorkout(GlobalStore.userToken.value);
+    console.log("REPONSE", response);
+
+    GlobalStore.currentWorkout.value = response;
+
+    if (GlobalStore.currentWorkout.value.previousSets.length > 0) {
+      reps.value = GlobalStore.currentWorkout.value.previousSets[0].reps;
+      load.value = GlobalStore.currentWorkout.value.previousSets[0].load;
+    } else {
+      reps.value = 0;
+      load.value = 0;
+    }
+
+    if (!GlobalStore.currentWorkout.value.pendingWorkoutExercise) {
+      try {
+        const { data } = await axios.put(
+          `${API_URL}/api/workouts/${GlobalStore.currentWorkout.value.workout.documentId}`,
+
+          {
+            workout_status: "completed",
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${GlobalStore.userToken.value}`,
+            },
+          },
+        );
+        console.log("1>>>", data);
+
+        GlobalStore.currentWorkout.value = null;
       } catch (error) {
         console.log(error.response.data);
       }
     }
+  } catch (error) {
+    console.log(error.response.data);
   }
-  isSubmiting.value = true;
+};
+
+const handleCancelWorkout = async () => {
+  try {
+    const currentWorkoutId =
+      GlobalStore.currentWorkout.value.workout.documentId;
+
+    const { data } = await axios.put(
+      `${API_URL}/api/workouts/${currentWorkoutId}`,
+      {
+        workout_status: "cancelled",
+      },
+      {
+        headers: { Authorization: `Bearer ${GlobalStore.userToken.value}` },
+      },
+    );
+
+    GlobalStore.currentWorkout.value = null;
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 </script>
 
@@ -78,10 +197,15 @@ const handleSet = async () => {
   <main>
     <section id="title"><h1>Séance en cours</h1></section>
 
-    <p v-if="!currentWorkout">Chargement de la séance...</p>
+    <p v-if="isLoading">Chargement de la séance...</p>
+
+    <p v-else-if="currentWorkout === null">Aucune séance en cours</p>
 
     <section v-else id="mainSection">
-      <section class="exerciseName">
+      <section
+        class="exerciseName"
+        v-if="currentWorkout.pendingWorkoutExercise"
+      >
         <h2>
           {{ currentWorkout.pendingWorkoutExercise.exercise.name }}
         </h2>
@@ -112,15 +236,15 @@ const handleSet = async () => {
         </p>
       </section>
 
-      <section class="seriesDone">
-        <h2>Séries réalisées</h2>
-        <div v-for="Sets in currentWorkout.pendingWorkoutExercise.sets">
-          <p>Série n°{{ Sets.set_number }} :</p>
-          <p v-if="Sets.completed === true">{{ Sets.reps }} reps</p>
-          <font-awesome-icon :icon="['fas', 'window-minimize']" v-else />
-
-          <p v-if="Sets.completed === true">{{ Sets.load }} kg</p>
-          <font-awesome-icon :icon="['fas', 'window-minimize']" v-else />
+      <section id="previousWorkout" v-if="currentWorkout.previousSets">
+        <h2>Dernière séance</h2>
+        <div
+          v-for="previousSets in currentWorkout.previousSets"
+          :key="previousSets.id"
+        >
+          <p>Set n° {{ previousSets.set_number }} :</p>
+          <p>{{ previousSets.reps }} reps</p>
+          <p>{{ previousSets.load }} kg</p>
         </div>
       </section>
 
@@ -155,9 +279,23 @@ const handleSet = async () => {
         </form>
       </section>
 
+      <section class="seriesDone" v-if="currentWorkout.pendingWorkoutExercise">
+        <h2>Séries réalisées</h2>
+        <div v-for="Sets in currentWorkout.pendingWorkoutExercise.sets">
+          <p>Série n°{{ Sets.set_number }} :</p>
+          <p v-if="Sets.completed === true">{{ Sets.reps }} reps</p>
+          <font-awesome-icon :icon="['fas', 'window-minimize']" v-else />
+
+          <p v-if="Sets.completed === true">{{ Sets.load }} kg</p>
+          <font-awesome-icon :icon="['fas', 'window-minimize']" v-else />
+        </div>
+      </section>
+
       <div id="exerciseDone">
-        <button>Terminer exercice</button>
+        <button @click="handleExerciseComplete">Terminer exercice</button>
       </div>
+
+      <BtnWorkoutCancel @stopWorkout="handleCancelWorkout" />
     </section>
   </main>
 </template>
@@ -165,7 +303,7 @@ const handleSet = async () => {
 <style scoped>
 main {
   padding: 20px;
-  height: calc(100vh - var(--footer-heigth));
+  min-height: calc(100vh - var(--footer-heigth));
 }
 
 #title {
@@ -190,6 +328,14 @@ main {
   flex-direction: column;
   justify-content: center;
   gap: 10px;
+}
+
+/* ---------------------- */
+#previousWorkout > div {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  line-height: 30px;
 }
 
 /* --------------------- */

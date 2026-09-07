@@ -11,6 +11,9 @@ onMounted(async () => {
     const response = await getCurrentWorkout(GlobalStore.userToken.value);
 
     GlobalStore.currentWorkout.value = response;
+    console.log(response);
+
+    console.log(GlobalStore.currentWorkout.value);
   } catch (error) {
     console.log(error.message);
   }
