@@ -33,4 +33,16 @@ async function login(identifier, password) {
   }
 }
 
-export { API_URL, getCurrentWorkout, login };
+const getWorkoutHistory = async (userToken) => {
+  try {
+    const response = await fetch(`${API_URL}/api/workouts/history`, {
+      headers: { Authorization: `Bearer ${userToken}` },
+    });
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export { API_URL, getCurrentWorkout, login, getWorkoutHistory };
