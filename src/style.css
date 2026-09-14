@@ -1,16 +1,18 @@
 :root {
-  --footer-heigth: 70px;
+  --footer-height: 70px;
+  --header-height: 100px;
   --main-bg: #0d1117;
   --bgc-secondary: #161b22;
-
-  --text: #6b6375;
-  --text-h: #08060d;
+  --purple-accent: #8b5cf6;
+  --main-text: #f0f6fc;
+  --secondary-text: #8b949e;
+  --accent-border: #30363d;
 
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
-  --accent: #aa3bff;
+
   --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
+
   --social-bg: rgba(244, 243, 236, 0.5);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
@@ -61,13 +63,19 @@
 body {
   margin: 0;
   box-sizing: border-box;
+  background-color: var(--main-bg);
+}
+
+main {
+  min-height: calc(100vh - (var(--header-height) + var(--footer-height)));
+  padding: 60px 0;
 }
 
 h1,
 h2 {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: var(--main-text);
 }
 
 h1 {
@@ -88,8 +96,14 @@ h2 {
     font-size: 20px;
   }
 }
-p {
+h3 {
+  color: var(--main-text);
+}
+h4,
+p,
+span {
   margin: 0;
+  color: var(--secondary-text);
 }
 
 #app {
@@ -104,10 +118,9 @@ p {
 }
 
 a {
-  color: var(--text-h);
   font-size: 16px;
   border-radius: 6px;
-  background: var(--social-bg);
+
   display: flex;
   padding: 6px 12px;
   align-items: center;
@@ -118,4 +131,9 @@ a {
   &:hover {
     box-shadow: var(--shadow);
   }
+}
+.container {
+  width: 1050px;
+  margin: 0 auto;
+  color: var(--bgc-secondary);
 }

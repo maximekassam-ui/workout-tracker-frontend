@@ -5,6 +5,7 @@ import LoginView from "../views/LoginView.vue";
 import Dashboard from "../views/DashboardView.vue";
 import CurrentWorkoutView from "../views/CurrentWorkoutView.vue";
 import WorkoutsHistoryView from "../views/WorkoutsHistoryView.vue";
+import SignUpView from "../views/SignUpView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: "/workouts-history",
       name: "workouts-history",
       component: WorkoutsHistoryView,
+    },
+    {
+      path: "/sign-up",
+      name: "sign-up",
+      component: SignUpView,
     },
   ],
 });

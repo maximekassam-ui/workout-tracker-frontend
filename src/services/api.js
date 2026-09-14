@@ -26,10 +26,16 @@ async function login(identifier, password) {
       body: JSON.stringify({ identifier: identifier, password: password }),
     });
 
-    const result = await response.json();
-    return result;
+    if (response.ok) {
+      const result = await response.json();
+      return result;
+    } else {
+      throw new Error("Nous avons rencontré un problème, veuillez réessayer !");
+    }
   } catch (error) {
     console.log(error.message);
+    throw error;
+  } finally {
   }
 }
 

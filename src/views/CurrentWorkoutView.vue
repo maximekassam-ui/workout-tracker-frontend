@@ -303,7 +303,7 @@ const handleCancelWorkout = async () => {
 <style scoped>
 main {
   padding: 20px;
-  min-height: calc(100vh - var(--footer-heigth));
+  min-height: calc(100vh - var(--footer-height));
 }
 
 #title {
