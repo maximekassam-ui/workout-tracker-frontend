@@ -19,7 +19,7 @@ const handleLogin = async () => {
 
       const result = await login(identifier.value, password.value);
 
-      // console.log(result); jwt et infis user
+      // console.log(result); jwt et infos user
 
       $cookies.set("userToken", result.jwt);
 
@@ -27,7 +27,8 @@ const handleLogin = async () => {
 
       return result;
     } catch (error) {
-      errorMessage.value = error.message;
+      errorMessage.value =
+        error?.message || "Un problème est survenu, veuillez réessayer !";
     } finally {
       isSubmitting.value = false;
     }

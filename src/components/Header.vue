@@ -42,7 +42,7 @@ header {
   border-bottom: solid 1px var(--purple-accent);
 }
 
-.router-link-active {
+#navSection .router-link-active {
   box-shadow: 0 0 10px var(--purple-accent);
   font-weight: 600;
   transform: translateY(-2px);
