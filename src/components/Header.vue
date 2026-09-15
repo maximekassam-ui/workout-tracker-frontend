@@ -1,5 +1,10 @@
 <script setup>
+import { inject } from "vue";
 import { RouterLink } from "vue-router";
+
+const GlobalStore = inject("GlobalStore");
+
+console.log(GlobalStore.userToken.value);
 </script>
 
 <template>
@@ -23,7 +28,12 @@ import { RouterLink } from "vue-router";
       </section>
 
       <section id="profilSection">
-        <RouterLink :to="{ name: 'login' }">
+        <div id="svgDiv" v-if="GlobalStore.userToken.value">
+          <font-awesome-icon :icon="['fas', 'user']" />
+          <font-awesome-icon :icon="['fas', 'sign-out-alt']" id="logOut" />
+        </div>
+
+        <RouterLink :to="{ name: 'login' }" v-else>
           <div><p>Se connecter</p></div></RouterLink
         >
       </section>
@@ -108,7 +118,7 @@ img {
   justify-content: flex-end;
 }
 
-#profilSection div {
+#profilSection a div {
   background-color: var(--purple-accent);
   min-width: fit-content;
   padding: 5px 10px;
@@ -127,5 +137,21 @@ img {
 #profilSection p {
   color: var(--main-bg);
   font-weight: 600;
+}
+
+#svgDiv {
+  margin-right: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+svg {
+  color: var(--purple-accent);
+  font-size: 27px;
+}
+#logOut {
+  font-size: 20px;
 }
 </style>

@@ -133,7 +133,7 @@ a {
   }
 }
 .container {
-  width: 1050px;
+  max-width: 1050px;
   margin: 0 auto;
   color: var(--bgc-secondary);
 }

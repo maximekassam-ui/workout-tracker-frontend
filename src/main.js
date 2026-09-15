@@ -8,9 +8,31 @@ import VueCookies from "vue-cookies";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-import { faWindowMinimize } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowAltCircleUp,
+  faBullseye,
+  faChartBar,
+  faClipboardList,
+  faDoorOpen,
+  faDumbbell,
+  faPlusCircle,
+  faSignOutAlt,
+  faUser,
+  faWindowMinimize,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(faWindowMinimize);
+library.add(
+  faWindowMinimize,
+  faUser,
+  faPlusCircle,
+  faClipboardList,
+  faArrowAltCircleUp,
+  faDumbbell,
+  faChartBar,
+  faBullseye,
+
+  faSignOutAlt,
+);
 
 const app = createApp(App);
 
