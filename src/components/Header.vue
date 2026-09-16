@@ -1,10 +1,10 @@
 <script setup>
-import { inject } from "vue";
+import { inject, ref } from "vue";
 import { RouterLink } from "vue-router";
 
 const GlobalStore = inject("GlobalStore");
 
-console.log(GlobalStore.userToken.value);
+const isMenuOpen = ref(false);
 </script>
 
 <template>
@@ -37,6 +37,62 @@ console.log(GlobalStore.userToken.value);
           <div><p>Se connecter</p></div></RouterLink
         >
       </section>
+
+      <!-- --------- Burger Menu under 600px  -->
+
+      <section id="burgerSection">
+        <font-awesome-icon
+          v-if="!isMenuOpen"
+          :icon="['fas', 'bars']"
+          @click="isMenuOpen = !isMenuOpen"
+        />
+
+        <font-awesome-icon
+          v-else
+          :icon="['fas', 'times']"
+          @click="isMenuOpen = !isMenuOpen"
+        />
+
+        <div id="closedMenu" :class="{ burgerMenu: isMenuOpen }">
+          <RouterLink :to="{ name: 'home' }" @click="isMenuOpen = false">
+            <p>Accueil</p></RouterLink
+          >
+
+          <RouterLink :to="{ name: 'dashboard' }" @click="isMenuOpen = false">
+            <p>Programme</p></RouterLink
+          >
+
+          <RouterLink
+            :to="{ name: 'workouts-history' }"
+            @click="isMenuOpen = false"
+          >
+            <p>Historique</p></RouterLink
+          >
+
+          <RouterLink
+            :to="{ name: 'profil' }"
+            v-if="GlobalStore.userToken.value"
+            @click="isMenuOpen = false"
+          >
+            <p>Profil</p></RouterLink
+          >
+
+          <RouterLink
+            :to="{ name: 'login' }"
+            v-else
+            @click="isMenuOpen = false"
+          >
+            <p>Se connecter</p></RouterLink
+          >
+
+          <font-awesome-icon
+            :icon="['fas', 'sign-out-alt']"
+            id="logOut"
+            v-if="GlobalStore.userToken.value"
+            @click="isMenuOpen = false"
+          />
+        </div>
+      </section>
     </div>
   </header>
 </template>
@@ -50,6 +106,9 @@ header {
   background-color: var(--main-bg);
   height: var(--header-height);
   border-bottom: solid 1px var(--purple-accent);
+  position: fixed;
+  width: 100%;
+  z-index: 1;
 }
 
 #navSection .router-link-active {
@@ -128,7 +187,7 @@ img {
   transition: 0.3s;
 }
 
-#profilSection div:hover {
+#profilSection div:hover:not(#svgDiv) {
   transform: translateY(-2px);
   box-shadow: 0 0 10px var(--purple-accent);
   background-color: #8f6cf7;
@@ -149,9 +208,63 @@ img {
 
 svg {
   color: var(--purple-accent);
-  font-size: 27px;
+  font-size: 24px;
 }
 #logOut {
-  font-size: 20px;
+  font-size: 16px;
+}
+#burgerSection {
+  display: none;
+}
+#closedMenu {
+  display: none;
+}
+
+/* Media Query ------------- */
+@media (max-width: 800px) {
+  #navSection {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* header {
+    position: relative;
+  } */
+
+  #navSection,
+  #profilSection {
+    display: none;
+  }
+  #burgerSection {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+  }
+  #closedMenu.burgerMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    position: absolute;
+    left: 0px;
+    top: var(--header-height);
+    z-index: 1;
+    background-color: var(--main-bg);
+    width: 100%;
+    padding: 20px;
+    border-bottom: var(--purple-accent) solid 1px;
+  }
+  #closedMenu.burgerMenu p {
+    color: var(--main-text);
+  }
+  #closedMenu.burgerMenu svg {
+    color: var(--main-text);
+  }
+
+  #closedMenu.burgerMenu .router-link-active p {
+    color: var(--purple-accent);
+  }
 }
 </style>

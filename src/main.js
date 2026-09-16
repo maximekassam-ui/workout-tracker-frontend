@@ -10,13 +10,16 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import {
   faArrowAltCircleUp,
+  faBars,
   faBullseye,
   faChartBar,
   faClipboardList,
-  faDoorOpen,
   faDumbbell,
+  faEye,
+  faEyeSlash,
   faPlusCircle,
   faSignOutAlt,
+  faTimes,
   faUser,
   faWindowMinimize,
 } from "@fortawesome/free-solid-svg-icons";
@@ -30,8 +33,11 @@ library.add(
   faDumbbell,
   faChartBar,
   faBullseye,
-
+  faBars,
   faSignOutAlt,
+  faTimes,
+  faEye,
+  faEyeSlash,
 );
 
 const app = createApp(App);

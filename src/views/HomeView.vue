@@ -179,7 +179,7 @@ h2 {
     margin-bottom: 0;
   }
   #hero a {
-    margin-top: 50px;
+    margin-top: 30px;
     font-size: 10px;
     padding: 3px 3px;
   }

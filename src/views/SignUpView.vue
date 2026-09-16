@@ -1,15 +1,18 @@
 <script setup>
-import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
+import { ref, inject } from "vue";
+import { RouterLink, useRouter, useRoute } from "vue-router";
 import { signUp } from "../services/api";
 
 const router = useRouter();
+const route = useRoute();
+const GlobalStore = inject("GlobalStore");
 
 const identifier = ref("");
 const password = ref("");
 const username = ref("");
 const errorMessage = ref(null);
 const isSubmitting = ref(false);
+const isPasswordVisible = ref(false);
 
 const handleSignUp = async () => {
   if (!identifier.value || !password.value || !username.value) {
@@ -27,13 +30,16 @@ const handleSignUp = async () => {
       // console.log(result); jwt et infos user
 
       $cookies.set("userToken", result.jwt);
+      GlobalStore.userToken.value = result.jwt;
 
-      router.push("/dashboard");
-
-      return result;
+      router.push({ name: route.query.redirect || "dashboard" });
     } catch (error) {
-      errorMessage.value =
-        error?.message || "Un problème est survenu, veuillez réessayer !";
+      if (error.message === "Email or Username are already taken") {
+        errorMessage.value = "L'email ou le pseudo sont déjà pris";
+      } else {
+        errorMessage.value =
+          error?.message || "Un problème est survenu, veuillez réessayer !";
+      }
     } finally {
       isSubmitting.value = false;
     }
@@ -79,13 +85,29 @@ const handleSignUp = async () => {
 
           <label for="password">Mot de passe : </label>
 
-          <input
-            type="password"
-            name="password"
-            id="password"
-            v-model="password"
-            @input="errorMessage = ''"
-          />
+          <div id="passwordDiv">
+            <input
+              :type="isPasswordVisible ? 'text' : 'password'"
+              name="password"
+              id="password"
+              v-model="password"
+              @input="errorMessage = ''"
+            />
+
+            <div>
+              <font-awesome-icon
+                :icon="['fas', 'eye']"
+                @click="isPasswordVisible = false"
+                v-if="isPasswordVisible"
+              />
+
+              <font-awesome-icon
+                :icon="['fas', 'eye-slash']"
+                @click="isPasswordVisible = true"
+                v-else
+              />
+            </div>
+          </div>
 
           <p id="errorMessage" v-if="errorMessage">{{ errorMessage }}</p>
           <p v-if="isSubmitting" id="isSubmitting">Inscription en cours..</p>
@@ -94,7 +116,10 @@ const handleSignUp = async () => {
 
         <div id="loginDiv">
           <p>Vous avez déjà un compte ?</p>
-          <RouterLink :to="{ name: 'login' }">Se connecter</RouterLink>
+          <RouterLink
+            :to="{ name: 'login', query: { redirect: route.query.redirect } }"
+            >Se connecter</RouterLink
+          >
         </div>
       </form>
     </div>
@@ -133,6 +158,7 @@ h1 {
 }
 h4 {
   font-weight: 100;
+  margin-bottom: 20px;
 }
 
 /* ------------------------------ */
@@ -157,7 +183,6 @@ input {
   outline: none;
   width: 100%;
   font-size: 16px;
-  min-width: 100%;
   background-color: white;
   display: flex;
   justify-content: flex-start;
@@ -166,8 +191,41 @@ input {
   margin-bottom: 30px;
 }
 
-input:focus {
+input:focus:not(#password) {
   border: 2px solid var(--purple-accent);
+}
+
+#passwordDiv {
+  margin-bottom: 30px;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#passwordDiv:focus-within {
+  border: 2px solid var(--purple-accent);
+}
+
+#password {
+  flex: 1;
+  width: auto;
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+#passwordDiv div {
+  width: 45px;
+  flex: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-left: solid 1px var(--secondary-text);
 }
 
 button {
@@ -214,5 +272,24 @@ a:hover {
 
 #loginDiv p {
   font-size: 16px;
+}
+
+/* Media Query ------------- */
+
+@media (max-width: 500px) {
+  main {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 350px) {
+  img {
+    height: 70px;
+    width: 70px;
+  }
+
+  #errorMessage {
+    font-size: 12px;
+  }
 }
 </style>

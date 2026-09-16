@@ -108,6 +108,10 @@ const handleWorkoutClick = (workout) => {
 </template>
 
 <style scoped>
+main {
+  margin-top: var(--header-height);
+}
+
 .allWorkouts {
   display: flex;
   flex-direction: column;
