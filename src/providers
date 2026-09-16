@@ -4,4 +4,8 @@ const getUserToken = () => {
   return userToken;
 };
 
-export { getUserToken };
+const logout = () => {
+  $cookies.remove("userToken");
+};
+
+export { getUserToken, logout };

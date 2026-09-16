@@ -2,7 +2,7 @@ import { createApp, ref } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import router from "./router";
-import { getUserToken } from "./providers";
+import { getUserToken, logout } from "./providers";
 
 import VueCookies from "vue-cookies";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -50,6 +50,15 @@ const Token = getUserToken();
 const userToken = ref(Token || "");
 const currentWorkout = ref(null);
 
-app.provide("GlobalStore", { userToken: userToken, currentWorkout });
+const logoutUser = () => {
+  logout();
+  userToken.value = "";
+};
+
+app.provide("GlobalStore", {
+  userToken: userToken,
+  currentWorkout,
+  logout: logoutUser,
+});
 
 app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");

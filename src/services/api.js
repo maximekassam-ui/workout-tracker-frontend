@@ -1,6 +1,6 @@
 const API_URL = "http://localhost:1337";
 
-async function getCurrentWorkout(userToken) {
+const getCurrentWorkout = async (userToken) => {
   try {
     // console.log(">>>>>>>>", `Bearer ${userToken}`);
     const response = await fetch(`${API_URL}/api/workouts/current`, {
@@ -16,9 +16,9 @@ async function getCurrentWorkout(userToken) {
   } catch (error) {
     console.log(error.message);
   }
-}
+};
 
-async function login(identifier, password) {
+const login = async (identifier, password) => {
   try {
     const response = await fetch(`${API_URL}/api/auth/local`, {
       method: "POST",
@@ -37,7 +37,7 @@ async function login(identifier, password) {
     console.log(error.message);
     throw error;
   }
-}
+};
 
 const signUp = async (identifier, password, username) => {
   try {

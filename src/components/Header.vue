@@ -1,10 +1,19 @@
 <script setup>
 import { inject, ref } from "vue";
 import { RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
 
 const GlobalStore = inject("GlobalStore");
+const router = useRouter();
 
 const isMenuOpen = ref(false);
+
+const handleLogout = () => {
+  isMenuOpen.value = false;
+  GlobalStore.logout();
+
+  router.push({ name: "home" });
+};
 </script>
 
 <template>
@@ -29,8 +38,15 @@ const isMenuOpen = ref(false);
 
       <section id="profilSection">
         <div id="svgDiv" v-if="GlobalStore.userToken.value">
-          <font-awesome-icon :icon="['fas', 'user']" />
-          <font-awesome-icon :icon="['fas', 'sign-out-alt']" id="logOut" />
+          <RouterLink :to="{ name: 'profil' }">
+            <font-awesome-icon :icon="['fas', 'user']"
+          /></RouterLink>
+
+          <font-awesome-icon
+            :icon="['fas', 'sign-out-alt']"
+            id="logOut"
+            @click="handleLogout"
+          />
         </div>
 
         <RouterLink :to="{ name: 'login' }" v-else>
@@ -89,7 +105,7 @@ const isMenuOpen = ref(false);
             :icon="['fas', 'sign-out-alt']"
             id="logOut"
             v-if="GlobalStore.userToken.value"
-            @click="isMenuOpen = false"
+            @click="handleLogout"
           />
         </div>
       </section>
@@ -227,7 +243,7 @@ svg {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   /* header {
     position: relative;
   } */
