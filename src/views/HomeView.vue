@@ -18,42 +18,42 @@ import { RouterLink } from "vue-router";
       </section>
 
       <section id="quickAccess">
-        <RouterLink>
+        <RouterLink :to="{ name: 'create-program' }">
           <font-awesome-icon :icon="['fas', 'plus-circle']" />
 
           <h4>Créer un programme</h4>
           <p>Construis ton programme et organise tes séances</p></RouterLink
         >
 
-        <RouterLink>
+        <RouterLink :to="{ name: 'my-program' }">
           <font-awesome-icon :icon="['fas', 'clipboard-list']" />
 
           <h4>Mon programme</h4>
           <p>Consulte ton programme et retrouve tes séances</p></RouterLink
         >
 
-        <RouterLink>
+        <RouterLink :to="{ name: 'progress' }">
           <font-awesome-icon :icon="['fas', 'arrow-alt-circle-up']" />
 
           <h4>Mes progrès</h4>
           <p>Suis ton évolution et tes performances</p></RouterLink
         >
 
-        <RouterLink>
+        <RouterLink :to="{ name: 'exercises-list' }">
           <font-awesome-icon :icon="['fas', 'dumbbell']" />
 
           <h4>Mes exercices</h4>
           <p>Explore les exercices et les muscles ciblés</p></RouterLink
         >
 
-        <RouterLink>
+        <RouterLink :to="{ name: 'statistics' }">
           <font-awesome-icon :icon="['fas', 'chart-bar']" />
 
           <h4>Mes statistiques</h4>
           <p>Analyse tes performances et tes entraînements</p>
         </RouterLink>
 
-        <RouterLink>
+        <RouterLink :to="{ name: 'goals' }">
           <font-awesome-icon :icon="['fas', 'bullseye']" />
 
           <h4>Mes objectifs</h4>

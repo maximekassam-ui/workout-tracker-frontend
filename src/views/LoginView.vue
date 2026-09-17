@@ -178,7 +178,7 @@ input:focus:not(#password) {
   border: 2px solid var(--purple-accent);
 }
 #passwordDiv {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   width: 100%;
   height: fit-content;
   display: flex;

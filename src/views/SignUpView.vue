@@ -188,7 +188,7 @@ input {
   justify-content: flex-start;
   padding: 10px;
   border-radius: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 input:focus:not(#password) {
@@ -196,7 +196,7 @@ input:focus:not(#password) {
 }
 
 #passwordDiv {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   width: 100%;
   height: fit-content;
   display: flex;

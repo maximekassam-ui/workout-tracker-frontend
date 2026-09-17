@@ -49,4 +49,13 @@ const handleLogout = () => {
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+button {
+  background-color: var(--purple-accent);
+  min-width: fit-content;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 17px;
+  border: solid 1px var(--main-bg);
+}
+</style>
