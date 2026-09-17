@@ -8,12 +8,16 @@ const getCurrentWorkout = async (userToken) => {
     });
 
     console.log(">>>>>>>>", `Bearer ${userToken}`);
+    console.log("STATUS :", response.status);
 
     if (response.status === 404) {
       return null;
     }
 
     const result = await response.json();
+
+    console.log("RESULT :", result);
+
     return result;
   } catch (error) {
     console.log(error.message);
