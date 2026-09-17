@@ -1,23 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-const getCurrentWorkout = async (userToken) => {
-  try {
-    // console.log(">>>>>>>>", `Bearer ${userToken}`);
-    const response = await fetch(`${API_URL}/api/workouts/current`, {
-      headers: { Authorization: `Bearer ${userToken}` },
-    });
-
-    if (response.status === 404) {
-      return null;
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
 const login = async (identifier, password) => {
   try {
     const response = await fetch(`${API_URL}/api/auth/local`, {
