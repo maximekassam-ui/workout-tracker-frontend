@@ -1,33 +1,65 @@
 <script setup>
 import { onMounted, ref, inject } from "vue";
+import { RouterLink } from "vue-router";
 
-import { getCurrentUser, getMyPrograms } from "../services/api";
+import { getCurrentUser } from "../services/api";
 
 const GlobalStore = inject("GlobalStore");
 
-const allProgram = ref([]);
+const allMyPrograms = ref([]);
 
-const userInfos = getCurrentUser(GlobalStore.userToken.value);
-console.log(userInfos);
+const loadUserInfos = async () => {
+  try {
+    const currentUser = await getCurrentUser(GlobalStore.userToken.value);
+    return currentUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-// onMounted(async () => {
-//   try {
-//     console.log("hello");
+onMounted(async () => {
+  try {
+    const userInfos = await loadUserInfos();
 
-//     const response = await getMyPrograms(GlobalStore.userToken.value);
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// });
+    // console.log(userInfos);
+    allMyPrograms.value = userInfos.programs.filter(
+      (program, index, programs) =>
+        index ===
+        programs.findIndex((p) => p.documentId === program.documentId),
+    );
+
+    console.log(allMyPrograms.value);
+  } catch (error) {
+    console.log(error);
+  }
+});
 </script>
 
 <template>
   <main>
     <div class="container">
       <h1>Mes programmes</h1>
-      <h2>Page en cours de création</h2>
+      <section v-if="allMyPrograms.length > 0">
+        <div
+          v-for="program in allMyPrograms"
+          :class="{ isActive: program.is_active === true }"
+        >
+          <h2>{{ program.name }}</h2>
+          <p v-if="program.description">{{ program.description }}</p>
+          <p>{{ program.is_active }}</p>
+        </div>
+      </section>
+
+      <div v-else>
+        <h2>Aucun programme créé</h2>
+        <RouterLink><div>Créer un programme</div></RouterLink>
+      </div>
     </div>
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.isActive {
+  border: solid white 2px;
+}
+</style>

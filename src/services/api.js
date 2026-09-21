@@ -24,16 +24,6 @@ const getCurrentWorkout = async (userToken) => {
   }
 };
 
-const getCurrentUser = async (userToken) => {
-  try {
-    const response = await fetch(`${API_URL}/api/user/me`, {
-      headers: { Authorization: `Bearer ${userToken}` },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const login = async (identifier, password) => {
   try {
     const response = await fetch(`${API_URL}/api/auth/local`, {
@@ -95,29 +85,9 @@ const getWorkoutHistory = async (userToken) => {
 
 const getCurrentUser = async (userToken) => {
   try {
-    const response = await fetch(`${API_URL}/api/users/me`, {
+    const response = await fetch(`${API_URL}/api/users/me?populate=programs`, {
       headers: { Authorization: `Bearer ${userToken}` },
     });
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-const getMyPrograms = async (userToken) => {
-  try {
-    const userInfos = ctx.state.user;
-    const userId = userInfos.documentId;
-
-    const response = await fetch(
-      `${API_URL}/api/programs`,
-      {
-        headers: { Authorization: `Bearer ${userToken}` },
-      },
-      { filters: { user: userId } },
-    );
 
     const result = await response.json();
     return result;
@@ -133,5 +103,4 @@ export {
   signUp,
   getWorkoutHistory,
   getCurrentUser,
-  getMyPrograms,
 };
