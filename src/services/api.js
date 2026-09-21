@@ -7,8 +7,8 @@ const getCurrentWorkout = async (userToken) => {
       headers: { Authorization: `Bearer ${userToken}` },
     });
 
-    console.log(">>>>>>>>", `Bearer ${userToken}`);
-    console.log("STATUS :", response.status);
+    // console.log(">>>>>>>>", `Bearer ${userToken}`);
+    // console.log("STATUS :", response.status);
 
     if (response.status === 404) {
       return null;
@@ -21,6 +21,16 @@ const getCurrentWorkout = async (userToken) => {
     return result;
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+const getCurrentUser = async (userToken) => {
+  try {
+    const response = await fetch(`${API_URL}/api/user/me`, {
+      headers: { Authorization: `Bearer ${userToken}` },
+    });
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -96,6 +106,26 @@ const getCurrentUser = async (userToken) => {
   }
 };
 
+const getMyPrograms = async (userToken) => {
+  try {
+    const userInfos = ctx.state.user;
+    const userId = userInfos.documentId;
+
+    const response = await fetch(
+      `${API_URL}/api/programs`,
+      {
+        headers: { Authorization: `Bearer ${userToken}` },
+      },
+      { filters: { user: userId } },
+    );
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 export {
   API_URL,
   getCurrentWorkout,
@@ -103,4 +133,5 @@ export {
   signUp,
   getWorkoutHistory,
   getCurrentUser,
+  getMyPrograms,
 };
