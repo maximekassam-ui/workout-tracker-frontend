@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import {
   faArrowAltCircleUp,
+  faArrowLeft,
   faBars,
   faBullseye,
   faChartBar,
@@ -38,6 +39,7 @@ library.add(
   faTimes,
   faEye,
   faEyeSlash,
+  faArrowLeft,
 );
 
 const app = createApp(App);

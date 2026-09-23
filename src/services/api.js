@@ -85,9 +85,12 @@ const getWorkoutHistory = async (userToken) => {
 
 const getCurrentUser = async (userToken) => {
   try {
-    const response = await fetch(`${API_URL}/api/users/me?populate=programs`, {
-      headers: { Authorization: `Bearer ${userToken}` },
-    });
+    const response = await fetch(
+      `${API_URL}/api/users/me?populate[programs][populate]=*`,
+      {
+        headers: { Authorization: `Bearer ${userToken}` },
+      },
+    );
 
     const result = await response.json();
     return result;
