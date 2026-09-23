@@ -15,6 +15,7 @@ import ProgressView from "../views/ProgressView.vue";
 import ExercicesListView from "../views/ExercicesListView.vue";
 import StatistiquesView from "../views/StatistiquesView.vue";
 import GoalsView from "../views/GoalsView.vue";
+import ProgramDetailView from "../views/ProgramDetailView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +71,12 @@ const router = createRouter({
       path: "/my-program",
       name: "my-program",
       component: MyProgramView,
+      meta: { requireAuth: true },
+    },
+    {
+      path: "/my-program/:documentId",
+      name: "program-detail",
+      component: ProgramDetailView,
       meta: { requireAuth: true },
     },
     {

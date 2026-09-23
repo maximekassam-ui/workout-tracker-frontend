@@ -21,11 +21,12 @@ onMounted(async () => {
   try {
     const userInfos = await loadUserInfos();
 
-    // console.log(userInfos);
+    console.log(userInfos);
     allMyPrograms.value = userInfos.programs.filter(
       (program, index, programs) =>
         index ===
         programs.findIndex((p) => p.documentId === program.documentId),
+      // evite les doublon de programme
     );
 
     console.log(allMyPrograms.value);
@@ -40,19 +41,30 @@ onMounted(async () => {
     <div class="container">
       <h1>Mes programmes</h1>
       <section v-if="allMyPrograms.length > 0">
-        <div
+        <RouterLink
           v-for="program in allMyPrograms"
           :class="{ isActive: program.is_active === true }"
+          :to="{
+            name: 'program-detail',
+            params: { documentId: program.documentId },
+          }"
         >
-          <h2>{{ program.name }}</h2>
+          <div>
+            <h2>{{ program.name }}</h2>
+            <span v-if="program.is_active === true">Actif</span>
+            <span v-else>Inactif</span>
+          </div>
+
           <p v-if="program.description">{{ program.description }}</p>
           <p>{{ program.is_active }}</p>
-        </div>
+        </RouterLink>
       </section>
 
       <div v-else>
         <h2>Aucun programme créé</h2>
-        <RouterLink><div>Créer un programme</div></RouterLink>
+        <RouterLink :to="{ name: 'create-program' }"
+          ><div>Créer un programme</div></RouterLink
+        >
       </div>
     </div>
   </main>
