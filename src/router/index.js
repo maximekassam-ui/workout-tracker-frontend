@@ -16,6 +16,8 @@ import ExercicesListView from "../views/ExercicesListView.vue";
 import StatistiquesView from "../views/StatistiquesView.vue";
 import GoalsView from "../views/GoalsView.vue";
 import ProgramDetailView from "../views/ProgramDetailView.vue";
+import CreateWorkoutTemplateView from "../views/CreateWorkoutTemplateView.vue";
+import WorkoutTemplateDetailView from "../views/WorkoutTemplateDetailView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -102,6 +104,18 @@ const router = createRouter({
       component: GoalsView,
       meta: { requireAuth: true },
     },
+    {
+      path: "/my-program/:documentId/create-workout",
+      name: "create-workout",
+      component: CreateWorkoutTemplateView,
+      meta: { requireAuth: true },
+    },
+    {
+      path: "/my-program/:programDocumentId/workout-template/:workoutTemplateDocumentId",
+      name: "workout-template",
+      component: WorkoutTemplateDetailView,
+      meta: { requireAuth: true },
+    },
   ],
 });
 
@@ -109,7 +123,10 @@ router.beforeEach((to, from) => {
   const token = getUserToken();
 
   if (to.meta.requireAuth && !token) {
-    return { name: "login", query: { redirect: to.name } };
+    return {
+      name: "login",
+      query: { redirect: to.name, documentId: to.params.documentId },
+    };
   } else if (to.meta.guestOnly && token) {
     return { name: "dashboard" };
   }

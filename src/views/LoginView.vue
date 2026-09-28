@@ -27,7 +27,10 @@ const handleLogin = async () => {
       $cookies.set("userToken", result.jwt);
       GlobalStore.userToken.value = result.jwt;
 
-      router.push({ name: route.query.redirect || "dashboard" });
+      router.push({
+        name: route.query.redirect || "dashboard",
+        params: { documentId: route.query.documentId },
+      });
     } catch (error) {
       if (error.message === "Invalid identifier or password") {
         errorMessage.value = "Email ou mot de passe incorrect";

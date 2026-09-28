@@ -14,10 +14,13 @@ import {
   faBars,
   faBullseye,
   faChartBar,
+  faChevronDown,
+  faCircle,
   faClipboardList,
   faDumbbell,
   faEye,
   faEyeSlash,
+  faPlus,
   faPlusCircle,
   faSignOutAlt,
   faTimes,
@@ -40,6 +43,8 @@ library.add(
   faEye,
   faEyeSlash,
   faArrowLeft,
+  faChevronDown,
+  faCircle,
 );
 
 const app = createApp(App);

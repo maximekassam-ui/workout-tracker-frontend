@@ -19,7 +19,9 @@ onMounted(async () => {
     console.log(data);
 
     program.value = data;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 });
 </script>
 
@@ -51,18 +53,39 @@ onMounted(async () => {
         <section id="workoutsSection">
           <div>
             <h2>Mes séances</h2>
-            <p>Ajouter une séance</p>
+            <RouterLink
+              :to="{
+                name: 'create-workout',
+                params: { documentId: program.documentId },
+              }"
+              >Ajouter une séance</RouterLink
+            >
           </div>
 
           <div v-if="program.workout_templates.length === 0" id="noWorkouts">
             <h3>Aucune séance n'a encore été créée.</h3>
 
-            <p>Créer une séance</p>
+            <RouterLink
+              :to="{
+                name: 'create-workout',
+                params: { documentId: program.documentId },
+              }"
+              >Créer une séance</RouterLink
+            >
           </div>
 
           <div v-else id="allWorkouts">
             <div v-for="workout in program.workout_templates">
-              <div class="workoutCard">
+              <RouterLink
+                class="workoutCard"
+                :to="{
+                  name: 'workout-template',
+                  params: {
+                    programDocumentId: program.documentId,
+                    workoutTemplateDocumentId: workout.documentId,
+                  },
+                }"
+              >
                 <h3>{{ workout.name }}</h3>
                 <h4>{{ workout.category }}</h4>
                 <h4>{{ workout.description }}</h4>
@@ -79,7 +102,7 @@ onMounted(async () => {
                       : "exercices"
                   }}
                 </h4>
-              </div>
+              </RouterLink>
             </div>
           </div>
         </section>
@@ -150,11 +173,12 @@ onMounted(async () => {
   font-size: 2rem;
 }
 
-#workoutsSection > div:first-child p {
+#workoutsSection > div:first-child a {
   border: 1px solid var(--purple-accent);
   border-radius: 10px;
   padding: 10px 20px;
   cursor: pointer;
+  color: var(--main-text);
 }
 
 #allWorkouts {
