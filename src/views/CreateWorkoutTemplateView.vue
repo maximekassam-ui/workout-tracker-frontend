@@ -90,7 +90,7 @@ const handleSubmit = async () => {
           v-model="description"
         ></textarea>
 
-        <p v-if="errorMessage" id="errorMessage">{{ errorMessage }}</p>
+        <p v-if="errorMessage" class="errorMessage">{{ errorMessage }}</p>
 
         <button>Créer la séance</button>
       </form>

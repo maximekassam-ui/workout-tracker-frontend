@@ -18,6 +18,7 @@ import GoalsView from "../views/GoalsView.vue";
 import ProgramDetailView from "../views/ProgramDetailView.vue";
 import CreateWorkoutTemplateView from "../views/CreateWorkoutTemplateView.vue";
 import WorkoutTemplateDetailView from "../views/WorkoutTemplateDetailView.vue";
+import WorkoutExerciseConfigView from "../views/WorkoutExerciseConfigView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,6 +115,12 @@ const router = createRouter({
       path: "/my-program/:programDocumentId/workout-template/:workoutTemplateDocumentId",
       name: "workout-template",
       component: WorkoutTemplateDetailView,
+      meta: { requireAuth: true },
+    },
+    {
+      path: "/my-program/:programDocumentId/workout-template/:workoutTemplateDocumentId/workout-exercise-config/:exerciseDocumentId",
+      name: "workout-exercise-config",
+      component: WorkoutExerciseConfigView,
       meta: { requireAuth: true },
     },
   ],

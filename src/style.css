@@ -116,3 +116,65 @@ a {
   margin: 0 auto;
   color: var(--bgc-secondary);
 }
+.form {
+  border: solid 1px var(--accent-border);
+  border-radius: 10px;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 40px 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 10px;
+}
+.form label {
+  color: var(--main-text);
+  align-self: flex-start;
+  margin-left: 5px;
+}
+.form input {
+  width: 100%;
+  background-color: var(--accent-border);
+  border: solid 2px transparent;
+  border-radius: 10px;
+  color: var(--main-text);
+  padding: 10px;
+  outline: none;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+.form input:focus {
+  border: solid 2px var(--purple-accent);
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+.form button {
+  background-color: var(--purple-accent);
+  border: none;
+  height: 40px;
+  width: 250px;
+  border-radius: 10px;
+  margin-top: 20px;
+  color: var(--main-text);
+  font-size: 18px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.form button:hover {
+  transform: translateY(-2px);
+}
+.errorMessage {
+  font-size: 14px;
+  color: var(--purple-accent);
+}
