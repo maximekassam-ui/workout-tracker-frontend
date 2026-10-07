@@ -15,6 +15,8 @@ import {
   faBullseye,
   faChartBar,
   faChevronDown,
+  faChevronLeft,
+  faChevronRight,
   faCircle,
   faClipboardList,
   faDumbbell,
@@ -24,6 +26,7 @@ import {
   faPlusCircle,
   faSignOutAlt,
   faTimes,
+  faTrash,
   faUser,
   faWindowMinimize,
 } from "@fortawesome/free-solid-svg-icons";
@@ -45,6 +48,9 @@ library.add(
   faArrowLeft,
   faChevronDown,
   faCircle,
+  faChevronLeft,
+  faChevronRight,
+  faTrash,
 );
 
 const app = createApp(App);

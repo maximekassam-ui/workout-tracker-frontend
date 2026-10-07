@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentWorkout } from "../services/api";
+import { getCurrentWorkout } from "../services/workoutApi";
 import { onMounted, inject, ref } from "vue";
 import { RouterLink } from "vue-router";
 

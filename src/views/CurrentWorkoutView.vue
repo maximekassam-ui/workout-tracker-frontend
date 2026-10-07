@@ -1,6 +1,6 @@
 <script setup>
 import { inject, onMounted, ref } from "vue";
-import { getCurrentWorkout } from "../services/api";
+import { getCurrentWorkout } from "../services/workoutApi.js";
 import axios from "axios";
 import { API_URL } from "../services/api";
 

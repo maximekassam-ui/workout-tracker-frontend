@@ -46,7 +46,7 @@ onMounted(async () => {
           :class="{ isActive: program.is_active === true }"
           :to="{
             name: 'program-detail',
-            params: { documentId: program.documentId },
+            params: { programDocumentId: program.documentId },
           }"
         >
           <div>

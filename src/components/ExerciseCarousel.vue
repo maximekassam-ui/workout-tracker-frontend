@@ -1,15 +1,41 @@
 <script setup>
+import { ref, onMounted } from "vue";
 import { RouterLink } from "vue-router";
 
 const props = defineProps({
   exercisesWithMuscles: Array,
+  programDocumentId: String,
+  workoutTemplateDocumentId: String,
+});
+
+const carousel = ref(null);
+
+const scrollRight = () => {
+  carousel.value.scrollLeft = carousel.value.scrollLeft + 300;
+};
+
+const scrollLeft = () => {
+  carousel.value.scrollLeft = carousel.value.scrollLeft - 300;
+};
+
+onMounted(async () => {
+  console.log(props);
 });
 </script>
 
 <template>
   <div>
-    <div id="carouselDiv2" class="container">
-      <div
+    <font-awesome-icon :icon="['fas', 'chevron-left']" @click="scrollLeft" />
+    <div id="carouselDiv2" class="container" ref="carousel">
+      <RouterLink
+        :to="{
+          name: 'workout-exercise-config',
+          params: {
+            programDocumentId: props.programDocumentId,
+            workoutTemplateDocumentId: props.workoutTemplateDocumentId,
+            exerciseDocumentId: exercise.documentId,
+          },
+        }"
         class="carouselCard"
         v-for="exercise in props.exercisesWithMuscles"
         :key="exercise.documentId"
@@ -29,8 +55,9 @@ const props = defineProps({
             </span>
           </div>
         </div>
-      </div>
+      </RouterLink>
     </div>
+    <font-awesome-icon :icon="['fas', 'chevron-right']" @click="scrollRight" />
   </div>
 </template>
 
@@ -38,13 +65,15 @@ const props = defineProps({
 #carouselDiv2 {
   border: solid 1px var(--accent-border);
   border-radius: 10px;
-  width: 850px;
+  flex: 1;
+  min-width: 0;
   height: 300px;
   padding: 20px;
   display: flex;
   gap: 20px;
   flex-wrap: nowrap;
   overflow-x: scroll;
+  scroll-behavior: smooth;
 }
 
 #carouselDiv2::-webkit-scrollbar {
@@ -65,5 +94,9 @@ const props = defineProps({
 .muscleRole p,
 .muscleRole span {
   font-size: 10px;
+}
+svg {
+  color: var(--purple-accent);
+  font-size: 24px;
 }
 </style>

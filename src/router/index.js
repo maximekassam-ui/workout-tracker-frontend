@@ -77,7 +77,7 @@ const router = createRouter({
       meta: { requireAuth: true },
     },
     {
-      path: "/my-program/:documentId",
+      path: "/my-program/:programDocumentId",
       name: "program-detail",
       component: ProgramDetailView,
       meta: { requireAuth: true },
@@ -106,7 +106,7 @@ const router = createRouter({
       meta: { requireAuth: true },
     },
     {
-      path: "/my-program/:documentId/create-workout",
+      path: "/my-program/:programDocumentId/create-workout",
       name: "create-workout",
       component: CreateWorkoutTemplateView,
       meta: { requireAuth: true },
@@ -118,7 +118,7 @@ const router = createRouter({
       meta: { requireAuth: true },
     },
     {
-      path: "/my-program/:programDocumentId/workout-template/:workoutTemplateDocumentId/workout-exercise-config/:exerciseDocumentId",
+      path: "/my-program/:programDocumentId/workout-template/:workoutTemplateDocumentId/workout-exercise-config/:exerciseDocumentId/program-exercise/:programExerciseDocumentId?",
       name: "workout-exercise-config",
       component: WorkoutExerciseConfigView,
       meta: { requireAuth: true },

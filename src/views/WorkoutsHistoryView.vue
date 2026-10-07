@@ -2,7 +2,7 @@
 import { onMounted, inject, ref } from "vue";
 import axios from "axios";
 
-import { getWorkoutHistory } from "../services/api";
+import { getWorkoutHistory } from "../services/workoutApi";
 
 const GlobalStore = inject("GlobalStore");
 const allWorkoutHistory = ref([]);

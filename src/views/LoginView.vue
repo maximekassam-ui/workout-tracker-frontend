@@ -1,7 +1,7 @@
 <script setup>
 import { ref, inject } from "vue";
 import { RouterLink, useRouter, useRoute } from "vue-router";
-import { login } from "../services/api";
+import { login } from "../services/authApi";
 
 const router = useRouter();
 const route = useRoute();

@@ -133,7 +133,8 @@ a {
   align-self: flex-start;
   margin-left: 5px;
 }
-.form input {
+.form input,
+.form textarea {
   width: 100%;
   background-color: var(--accent-border);
   border: solid 2px transparent;
@@ -144,7 +145,8 @@ a {
   margin-bottom: 20px;
   font-size: 16px;
 }
-.form input:focus {
+.form input:focus,
+.form textarea:focus {
   border: solid 2px var(--purple-accent);
 }
 /* Chrome, Safari, Edge, Opera */
@@ -177,4 +179,8 @@ input[type="number"] {
 .errorMessage {
   font-size: 14px;
   color: var(--purple-accent);
+}
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }

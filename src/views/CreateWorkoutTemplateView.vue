@@ -1,13 +1,13 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, inject } from "vue";
-import { createWorkoutTemplate } from "../services/api";
+import { createWorkoutTemplate } from "../services/workoutTemplateApi";
 
 const route = useRoute();
 const router = useRouter();
 const GlobalStore = inject("GlobalStore");
 
-console.log(route.params.documentId);
+// console.log(route.params.programDocumentId);
 
 const workoutName = ref("");
 const category = ref("");
@@ -19,7 +19,7 @@ const handleSubmit = async () => {
   //     workoutName.value,
   //     category.value,
   //     description.value,
-  //     route.params.documentId,
+  //     route.params.programDocumentId,
   //   );
 
   if (!workoutName.value || !category.value) {
@@ -29,15 +29,15 @@ const handleSubmit = async () => {
       workoutName.value,
       category.value,
       description.value,
-      route.params.documentId,
+      route.params.programDocumentId,
       GlobalStore.userToken.value,
     );
 
-    console.log(response);
+    // console.log(response);
 
     router.push({
       name: "program-detail",
-      params: { documentId: route.params.documentId },
+      params: { programDocumentId: route.params.programDocumentId },
     });
   }
 };

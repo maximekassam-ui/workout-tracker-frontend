@@ -1,24 +1,26 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { getProgram } from "../services/api";
+import { getProgram } from "../services/programApi";
 import { inject, onMounted, ref } from "vue";
 
 const route = useRoute();
-// console.log(route.params.documentId);
+// console.log(route.params.programDocumentId);
 const GlobalStore = inject("GlobalStore");
 
 const program = ref(null);
 
 onMounted(async () => {
   try {
-    const { data } = await getProgram(
-      route.params.documentId,
+    console.log("Program ID :", route.params.programDocumentId);
+
+    const response = await getProgram(
+      route.params.programDocumentId,
       GlobalStore.userToken.value,
     );
 
-    console.log(data);
+    console.log(response);
 
-    program.value = data;
+    program.value = response;
   } catch (error) {
     console.log(error);
   }
@@ -56,8 +58,9 @@ onMounted(async () => {
             <RouterLink
               :to="{
                 name: 'create-workout',
-                params: { documentId: program.documentId },
+                params: { programDocumentId: program.documentId },
               }"
+              v-if="program.workout_templates.length !== 0"
               >Ajouter une séance</RouterLink
             >
           </div>
@@ -68,7 +71,7 @@ onMounted(async () => {
             <RouterLink
               :to="{
                 name: 'create-workout',
-                params: { documentId: program.documentId },
+                params: { programDocumentId: program.documentId },
               }"
               >Créer une séance</RouterLink
             >
@@ -173,7 +176,8 @@ onMounted(async () => {
   font-size: 2rem;
 }
 
-#workoutsSection > div:first-child a {
+#workoutsSection > div:first-child a,
+#noWorkouts a {
   border: 1px solid var(--purple-accent);
   border-radius: 10px;
   padding: 10px 20px;
@@ -217,6 +221,9 @@ onMounted(async () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+#noWorkouts h3 {
+  margin-bottom: 70px;
 }
 
 .workoutCard h4:first-of-type {
