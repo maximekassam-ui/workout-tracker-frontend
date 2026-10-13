@@ -3,6 +3,7 @@ import { onMounted, ref, inject } from "vue";
 import { RouterLink } from "vue-router";
 
 import { getCurrentUser } from "../services/api";
+import { deleteProgram } from "../services/programApi";
 
 const GlobalStore = inject("GlobalStore");
 
@@ -34,6 +35,28 @@ onMounted(async () => {
     console.log(error);
   }
 });
+
+const deleteMyProgram = async (programDocumentId) => {
+  const isDeleting = window.confirm(
+    "Voulez-vous vraiment supprimer ce programme ?",
+  );
+
+  if (!isDeleting) {
+    return;
+  }
+
+  try {
+    await deleteProgram(programDocumentId, GlobalStore.userToken.value);
+
+    const updatedAllMyPrograms = allMyPrograms.value.filter(
+      (program) => program.documentId !== programDocumentId,
+    );
+
+    allMyPrograms.value = updatedAllMyPrograms;
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <template>
@@ -41,27 +64,34 @@ onMounted(async () => {
     <div class="container">
       <h1>Mes programmes</h1>
       <section v-if="allMyPrograms.length > 0">
-        <RouterLink
-          v-for="program in allMyPrograms"
-          :class="{ isActive: program.is_active === true }"
-          :to="{
-            name: 'program-detail',
-            params: { programDocumentId: program.documentId },
-          }"
-        >
-          <div>
-            <h2>{{ program.name }}</h2>
-            <span v-if="program.is_active === true">Actif</span>
-            <span v-else>Inactif</span>
-          </div>
+        <div class="programSection" v-for="program in allMyPrograms">
+          <RouterLink
+            :class="{ isActive: program.is_active === true }"
+            :to="{
+              name: 'program-detail',
+              params: { programDocumentId: program.documentId },
+            }"
+          >
+            <div>
+              <h2>{{ program.name }}</h2>
+              <span v-if="program.is_active === true">Actif</span>
+              <span v-else>Inactif</span>
+            </div>
 
-          <p v-if="program.description">{{ program.description }}</p>
+            <p v-if="program.description">{{ program.description }}</p>
 
-          <p v-if="program.workout_templates.length > 0">
-            {{ program.workout_templates.length }}
-            {{ program.workout_templates.length > 1 ? "séances" : "séance" }}
-          </p>
-        </RouterLink>
+            <p v-if="program.workout_templates.length > 0">
+              {{ program.workout_templates.length }}
+              {{ program.workout_templates.length > 1 ? "séances" : "séance" }}
+            </p>
+          </RouterLink>
+
+          <font-awesome-icon
+            :icon="['fas', 'trash']"
+            class="deleteButton"
+            @click="deleteMyProgram(program.documentId)"
+          />
+        </div>
       </section>
 
       <div v-else>
@@ -91,7 +121,7 @@ onMounted(async () => {
   gap: 30px;
 }
 
-.container > section > a {
+.programSection > a {
   min-height: 200px;
   padding: 25px;
 
@@ -108,30 +138,30 @@ onMounted(async () => {
   transition: 0.2s;
 }
 
-.container > section > a:hover {
+.programSection > a:hover {
   transform: translateY(-3px);
   border-color: var(--purple-accent);
 }
 
 /* Programme actif --------- */
 
-.container > section > a.isActive {
+.programSection > a.isActive {
   border: 2px solid var(--purple-accent);
 }
 
-.container > section > a > div {
+.programSection > a > div {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
 }
 
-.container > section h2 {
+.programSection h2 {
   margin: 0;
   font-size: 1.5rem;
 }
 
-.container > section span {
+.programSection span {
   padding: 6px 12px;
   border: 1px solid var(--purple-accent);
   border-radius: 20px;
@@ -139,11 +169,29 @@ onMounted(async () => {
   font-size: 0.85rem;
 }
 
-.container > section > a > p {
+.programSection > a > p {
   margin: 20px 0 0;
 
   color: var(--secondary-text);
   line-height: 1.5;
+}
+
+.programSection {
+  position: relative;
+}
+
+.deleteButton {
+  color: var(--secondary-text);
+  font-size: 18px;
+  transition: 0.3s;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+.deleteButton:hover {
+  color: var(--main-text);
+  transform: scale(1.1);
 }
 
 /* Aucun programme ---------- */

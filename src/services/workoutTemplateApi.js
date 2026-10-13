@@ -53,4 +53,28 @@ const getWorkoutTemplate = async (workoutTemplateId, userToken) => {
   }
 };
 
-export { createWorkoutTemplate, getWorkoutTemplate };
+const deleteWorkoutTemplate = async (workoutTemplateId, userToken) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/workout-templates/${workoutTemplateId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      },
+    );
+
+    if (response.status === 204) {
+      return null;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { createWorkoutTemplate, getWorkoutTemplate, deleteWorkoutTemplate };

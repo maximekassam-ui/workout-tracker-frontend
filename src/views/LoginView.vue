@@ -29,7 +29,7 @@ const handleLogin = async () => {
 
       router.push({
         name: route.query.redirect || "dashboard",
-        params: { documentId: route.query.documentId },
+        params: { programDocumentId: route.query.programDocumentId },
       });
     } catch (error) {
       if (error.message === "Invalid identifier or password") {

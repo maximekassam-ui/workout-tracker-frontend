@@ -49,4 +49,27 @@ const createProgram = async (name, description, is_active, userToken) => {
   }
 };
 
-export { getProgram, createProgram };
+const deleteProgram = async (programDocumentId, userToken) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/programs/${programDocumentId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      },
+    );
+
+    if (response.status === 204) {
+      return null;
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getProgram, createProgram, deleteProgram };

@@ -1,6 +1,7 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { getProgram } from "../services/programApi";
+import { deleteWorkoutTemplate } from "../services/workoutTemplateApi";
 import { inject, onMounted, ref } from "vue";
 
 const route = useRoute();
@@ -11,20 +12,42 @@ const program = ref(null);
 
 onMounted(async () => {
   try {
-    console.log("Program ID :", route.params.programDocumentId);
+    // console.log("Program ID :", route.params.programDocumentId);
 
     const response = await getProgram(
       route.params.programDocumentId,
       GlobalStore.userToken.value,
     );
 
-    console.log(response);
+    // console.log(response);
 
     program.value = response;
   } catch (error) {
     console.log(error);
   }
 });
+
+const deleteWorkout = async (workoutDocumentId) => {
+  const isDeleting = window.confirm(
+    "Voulez-vous vraiment supprimer cet séance ?",
+  );
+
+  if (!isDeleting) {
+    return;
+  }
+  try {
+    await deleteWorkoutTemplate(workoutDocumentId, GlobalStore.userToken.value);
+
+    const response = await getProgram(
+      route.params.programDocumentId,
+      GlobalStore.userToken.value,
+    );
+
+    program.value = response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 </script>
 
 <template>
@@ -78,7 +101,10 @@ onMounted(async () => {
           </div>
 
           <div v-else id="allWorkouts">
-            <div v-for="workout in program.workout_templates">
+            <div
+              v-for="workout in program.workout_templates"
+              class="workoutCardDiv"
+            >
               <RouterLink
                 class="workoutCard"
                 :to="{
@@ -106,6 +132,12 @@ onMounted(async () => {
                   }}
                 </h4>
               </RouterLink>
+
+              <font-awesome-icon
+                :icon="['fas', 'trash']"
+                class="deletButton"
+                @click="deleteWorkout(workout.documentId)"
+              />
             </div>
           </div>
         </section>
@@ -241,6 +273,24 @@ onMounted(async () => {
 
 .workoutCard h4:last-child {
   margin: 20px 0 0;
+}
+
+.workoutCardDiv {
+  position: relative;
+}
+
+.deletButton {
+  color: var(--secondary-text);
+  font-size: 18px;
+  transition: 0.3s;
+  cursor: pointer;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+.deletButton:hover {
+  color: var(--main-text);
+  transform: scale(1.1);
 }
 
 /* Media Query ------------- */
