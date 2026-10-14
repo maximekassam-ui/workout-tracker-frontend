@@ -19,6 +19,7 @@ import ProgramDetailView from "../views/ProgramDetailView.vue";
 import CreateWorkoutTemplateView from "../views/CreateWorkoutTemplateView.vue";
 import WorkoutTemplateDetailView from "../views/WorkoutTemplateDetailView.vue";
 import WorkoutExerciseConfigView from "../views/WorkoutExerciseConfigView.vue";
+import MusclesListView from "../views/MusclesListView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -122,6 +123,11 @@ const router = createRouter({
       name: "workout-exercise-config",
       component: WorkoutExerciseConfigView,
       meta: { requireAuth: true },
+    },
+    {
+      path: "/muscles-list",
+      name: "muscles-list",
+      component: MusclesListView,
     },
   ],
 });
