@@ -39,11 +39,11 @@ import { RouterLink } from "vue-router";
           <p>Suis ton évolution et tes performances</p></RouterLink
         >
 
-        <RouterLink :to="{ name: 'exercises-list' }">
-          <font-awesome-icon :icon="['fas', 'dumbbell']" />
+        <RouterLink :to="{ name: 'library' }">
+          <font-awesome-icon :icon="['fas', 'book-open']" />
 
-          <h4>Mes exercices</h4>
-          <p>Explore les exercices et les muscles ciblés</p></RouterLink
+          <h4>Bibliothèque</h4>
+          <p>Découvrir, comprendre et préparer son entrainement</p></RouterLink
         >
 
         <RouterLink :to="{ name: 'statistics' }">

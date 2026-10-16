@@ -1,4 +1,5 @@
 import { API_URL } from "./api";
+import qs from "qs";
 
 const getExercise = async (documentId, userToken) => {
   try {
@@ -31,12 +32,24 @@ const getExercises = async (userToken) => {
 
 const getExercisesWithMuscle = async (userToken) => {
   try {
-    const response = await fetch(
-      `${API_URL}/api/exercises?populate[exercise_muscles][populate]=muscle`,
+    const query = qs.stringify(
       {
-        headers: { Authorization: `Bearer ${userToken}` },
+        populate: {
+          image: true,
+
+          exercise_muscles: {
+            populate: ["muscle"],
+          },
+        },
+      },
+      {
+        encodeValuesOnly: true,
       },
     );
+
+    const response = await fetch(`${API_URL}/api/exercises?${query}`, {
+      headers: { Authorization: `Bearer ${userToken}` },
+    });
 
     const result = await response.json();
     return result;

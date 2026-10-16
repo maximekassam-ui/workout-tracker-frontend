@@ -20,6 +20,10 @@ import CreateWorkoutTemplateView from "../views/CreateWorkoutTemplateView.vue";
 import WorkoutTemplateDetailView from "../views/WorkoutTemplateDetailView.vue";
 import WorkoutExerciseConfigView from "../views/WorkoutExerciseConfigView.vue";
 import MusclesListView from "../views/MusclesListView.vue";
+import MuscleDetailView from "../views/MuscleDetailView.vue";
+import LibraryView from "../views/LibraryView.vue";
+import WorkoutTypesView from "../views/WorkoutTypesView.vue";
+import ProgramTypesView from "../views/ProgramTypesView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -125,9 +129,29 @@ const router = createRouter({
       meta: { requireAuth: true },
     },
     {
+      path: "/library",
+      name: "library",
+      component: LibraryView,
+    },
+    {
       path: "/muscles-list",
       name: "muscles-list",
       component: MusclesListView,
+    },
+    {
+      path: "/muscles-detail/:muscleDocumentId",
+      name: "muscles-detail",
+      component: MuscleDetailView,
+    },
+    {
+      path: "/workout-types",
+      name: "workout-types",
+      component: WorkoutTypesView,
+    },
+    {
+      path: "/program-types",
+      name: "program-types",
+      component: ProgramTypesView,
     },
   ],
 });
