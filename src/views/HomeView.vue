@@ -85,7 +85,7 @@ h2 {
 #hero a {
   align-self: center;
   margin-top: 30px;
-  color: var(--main-bg);
+  color: var(--main-text);
   font-weight: bold;
   font-size: 18px;
   background-color: var(--purple-accent);
@@ -93,7 +93,6 @@ h2 {
   padding: 5px 10px;
   border-radius: 7px;
   font-size: 17px;
-  box-shadow: 0 0 10px 5px var(--main-text);
   transition: 0.3s;
 }
 

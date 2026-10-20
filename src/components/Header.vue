@@ -128,14 +128,10 @@ header {
 }
 
 #navSection .router-link-active {
-  box-shadow: 0 0 10px var(--purple-accent);
+  background-color: var(--purple-accent);
   font-weight: 600;
   transform: translateY(-2px);
   transition: 0.3s;
-}
-
-#navSection .router-link-active > p {
-  color: var(--purple-accent);
 }
 
 header > div {
@@ -176,7 +172,7 @@ img {
   font-weight: 600;
 }
 
-#navSection a:hover p {
+#navSection a:hover p:not(.router-link-active p) {
   color: var(--purple-accent);
 }
 

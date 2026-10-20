@@ -39,7 +39,7 @@ const getExerciseImageUrl = (exercise) => {
       <p v-else-if="errorMessage">{{ errorMessage }}</p>
 
       <div v-else id="exercisesListDiv">
-        <h1>Explorer lese exercices</h1>
+        <h1>Explorer les exercices</h1>
         <div v-for="exercise in exerciseList" :key="exercise.documentId">
           <h3>{{ exercise.name }}</h3>
 

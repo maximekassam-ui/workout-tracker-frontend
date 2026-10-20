@@ -6,6 +6,8 @@ import { RouterLink } from "vue-router";
 const GlobalStore = inject("GlobalStore");
 const currentWorkout = GlobalStore.currentWorkout;
 
+const isLoading = ref(true);
+
 onMounted(async () => {
   try {
     const response = await getCurrentWorkout(GlobalStore.userToken.value);
@@ -16,20 +18,25 @@ onMounted(async () => {
     console.log(GlobalStore.currentWorkout.value);
   } catch (error) {
     console.log(error.message);
+  } finally {
+    isLoading.value = false;
   }
 });
 </script>
 
 <template>
   <main>
-    <p v-if="!GlobalStore.currentWorkout">Chargement en cours ...</p>
-    <div v-else>
-      <p v-if="!currentWorkout">Aucune séance en cours</p>
+    <div class="container">
+      <p v-if="isLoading">Chargement en cours ...</p>
+
+      <p v-else-if="!currentWorkout">Aucune séance en cours</p>
 
       <div v-else>
-        <RouterLink :to="{ name: 'current-workout' }"
-          ><div><p>Reprendre la séance en cours</p></div></RouterLink
-        >
+        <RouterLink :to="{ name: 'current-workout' }">
+          <div>
+            <p>Reprendre la séance en cours</p>
+          </div>
+        </RouterLink>
       </div>
     </div>
   </main>

@@ -184,6 +184,7 @@ input {
   width: 100%;
   font-size: 16px;
   background-color: white;
+  color: var(--bgc-secondary);
   display: flex;
   justify-content: flex-start;
   padding: 10px;
