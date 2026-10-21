@@ -69,8 +69,10 @@ const deleteWorkout = async (workoutDocumentId) => {
             </div>
 
             <div>
-              <p v-if="program.is_active === true">Actif</p>
-              <p v-else>Inactif</p>
+              <p v-if="program.is_active === true" class="statusActive">
+                Actif
+              </p>
+              <p v-else class="statusInactive">Inactif</p>
             </div>
           </div>
         </section>
@@ -116,7 +118,20 @@ const deleteWorkout = async (workoutDocumentId) => {
                 }"
               >
                 <h3>{{ workout.name }}</h3>
-                <h4>{{ workout.category }}</h4>
+                <h4
+                  :class="{
+                    ppl:
+                      workout.category === 'Push' ||
+                      workout.category === 'Pull' ||
+                      workout.category === 'Legs',
+                    upperLower:
+                      workout.category === 'Upper' ||
+                      workout.category === 'Lower',
+                    fullBody: workout.category === 'Full body',
+                  }"
+                >
+                  {{ workout.category }}
+                </h4>
                 <h4>{{ workout.description }}</h4>
 
                 <h4 v-if="workout.program_exercises.length === 0">
@@ -152,7 +167,7 @@ const deleteWorkout = async (workoutDocumentId) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 30px 30px 30px;
+  padding: 45px 30px 30px 30px;
   margin-bottom: 50px;
   border-bottom: solid 1px var(--secondary-text);
 }
@@ -162,7 +177,17 @@ const deleteWorkout = async (workoutDocumentId) => {
   display: inline-block;
   justify-self: flex-start;
   align-self: flex-start;
-  margin-bottom: 70px;
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  background-color: var(--main-bg);
+  border-bottom: 1px solid var(--accent-border);
+  border-radius: 0;
+  width: 100%;
+  padding: 12px 30px;
+  margin-bottom: 0;
 }
 
 #titleSection > div {
@@ -185,9 +210,23 @@ const deleteWorkout = async (workoutDocumentId) => {
 }
 
 #titleSection p {
-  border: 1px solid var(--purple-accent);
   border-radius: 20px;
   padding: 8px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusActive {
+  color: #4ade80;
+  border: 1px solid #4ade80;
+  background-color: rgba(74, 222, 128, 0.1);
+}
+
+.statusInactive {
+  color: var(--secondary-text);
+  border: 1px solid var(--accent-border);
+  background-color: var(--bgc-secondary);
 }
 
 /* ------------------------- */
@@ -210,11 +249,27 @@ const deleteWorkout = async (workoutDocumentId) => {
 
 #workoutsSection > div:first-child a,
 #noWorkouts a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--purple-accent);
   border-radius: 10px;
   padding: 10px 20px;
-  cursor: pointer;
+  background-color: var(--purple-accent);
   color: var(--main-text);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#workoutsSection > div:first-child a:hover,
+#noWorkouts a:hover {
+  background-color: #7c4fe0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.2);
 }
 
 #allWorkouts {
@@ -224,7 +279,8 @@ const deleteWorkout = async (workoutDocumentId) => {
 }
 
 .workoutCard {
-  border: 1px solid var(--purple-accent);
+  background-color: var(--bgc-secondary);
+  border: 1px solid var(--accent-border);
   border-radius: 15px;
   padding: 25px;
   min-height: 200px;
@@ -233,19 +289,28 @@ const deleteWorkout = async (workoutDocumentId) => {
   flex-direction: column;
   justify-content: space-between;
 
-  transition: 0.2s;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .workoutCard:hover {
   transform: translateY(-3px);
+  border-color: var(--purple-accent);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12);
 }
 
 .workoutCard h3 {
   margin: 0;
-  font-size: 1.5rem;
-  padding: 5px 12px;
-  border-radius: 20px;
-  background-color: var(--purple-accent);
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--main-text);
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--accent-border);
 }
 #noWorkouts {
   height: 200px;
@@ -260,19 +325,33 @@ const deleteWorkout = async (workoutDocumentId) => {
 
 .workoutCard h4:first-of-type {
   display: inline-block;
+  align-self: flex-start;
   margin: 15px 0;
-
-  color: var(--main-text);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid;
+  background-color: #8b5cf622;
+  color: #a78bfa;
+  border-color: #8b5cf6;
 }
 
 .workoutCard h4:nth-of-type(2) {
   margin: 0;
   color: var(--secondary-text);
   font-weight: normal;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .workoutCard h4:last-child {
   margin: 20px 0 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--accent-border);
+  color: var(--main-text);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .workoutCardDiv {
@@ -281,16 +360,19 @@ const deleteWorkout = async (workoutDocumentId) => {
 
 .deletButton {
   color: var(--secondary-text);
-  font-size: 18px;
-  transition: 0.3s;
+  font-size: 16px;
+  border-radius: 8px;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
   cursor: pointer;
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 16px;
+  right: 16px;
 }
 .deletButton:hover {
-  color: var(--main-text);
-  transform: scale(1.1);
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
 }
 
 /* Media Query ------------- */
@@ -303,6 +385,38 @@ const deleteWorkout = async (workoutDocumentId) => {
   #titleSection > div {
     flex-direction: column;
     align-items: flex-start;
+  }
+  #titleSection {
+    padding: 10px 15px 25px;
+    margin-bottom: 25px;
+  }
+
+  #titleSection > a {
+    margin-bottom: 30px;
+  }
+
+  #titleSection h1 {
+    font-size: 2rem;
+    overflow-wrap: anywhere;
+  }
+
+  #titleSection > div {
+    gap: 15px;
+  }
+
+  #workoutsSection {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 420px) {
+  #workoutsSection h2 {
+    font-size: 1.5rem;
+  }
+
+  #workoutsSection > div:first-child a {
+    font-size: 14px;
+    padding: 8px 12px;
   }
 }
 </style>

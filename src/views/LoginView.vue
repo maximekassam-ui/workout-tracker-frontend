@@ -221,6 +221,7 @@ button {
   min-width: 200px;
   border-radius: 10px;
   background-color: var(--purple-accent);
+  color: var(--main-text);
   border: none;
   font-size: 16px;
   font-weight: bold;

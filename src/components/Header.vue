@@ -262,7 +262,7 @@ svg {
     position: absolute;
     left: 0px;
     top: var(--header-height);
-    z-index: 1;
+    z-index: 2;
     background-color: var(--main-bg);
     width: 100%;
     padding: 20px;

@@ -192,20 +192,56 @@ const deleteExercise = async (programExerciseDocumentId) => {
             }"
           >
             <h2>{{ exercise.exercise.name }}</h2>
-            <div>
+
+            <div class="exerciseStats">
               <p>
-                Nombre de {{ exercise.target_sets > 1 ? "séries" : "série" }} :
+                <font-awesome-icon :icon="['fas', 'layer-group']" />
                 <span>{{ exercise.target_sets }}</span>
+                {{ exercise.target_sets > 1 ? "séries" : "série" }}
               </p>
 
-              <p>
-                Entre <span>{{ exercise.target_reps_min }}</span> et
-
-                <span>{{ exercise.target_reps_max }}</span> répétitions
+              <p
+                v-if="
+                  ['WEIGHT_REPS', 'BODYWEIGHT_REPS', 'REPS'].includes(
+                    exercise.exercise.measurement_type,
+                  )
+                "
+              >
+                <font-awesome-icon :icon="['fas', 'sync']" />
+                <span
+                  >{{ exercise.target_reps_min }}–{{
+                    exercise.target_reps_max
+                  }}</span
+                >
+                répétitions
               </p>
 
-              <p>
-                Avec un poids de <span>{{ exercise.target_load }}</span> kg
+              <p v-if="exercise.exercise.measurement_type === 'WEIGHT_REPS'">
+                <font-awesome-icon :icon="['fas', 'dumbbell']" />
+
+                <span>{{ exercise.target_load }} kg</span>
+                Charge
+              </p>
+
+              <p
+                v-else-if="
+                  exercise.exercise.measurement_type === 'BODYWEIGHT_REPS'
+                "
+              >
+                <font-awesome-icon :icon="['fas', 'male']" />
+                <span>Poids du corps</span>
+              </p>
+
+              <p v-if="exercise.exercise.measurement_type === 'TIME'">
+                <font-awesome-icon :icon="['fas', 'clock']" />
+                <span>{{ exercise.target_duration }}</span>
+                Durée
+              </p>
+
+              <p v-if="exercise.exercise.measurement_type === 'DISTANCE'">
+                <font-awesome-icon :icon="['fas', 'route']" />
+                <span>{{ exercise.target_distance }}</span>
+                Distance
               </p>
             </div>
           </RouterLink>
@@ -299,12 +335,6 @@ h1 {
   flex-direction: column;
   height: 100%;
 }
-.exerciseCard a div {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
 
 .exerciseCard h2 {
   font-size: 22px;
@@ -312,16 +342,43 @@ h1 {
   margin-top: 0;
 }
 
-.exerciseCard p {
+.exerciseCard .exerciseStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.exerciseCard .exerciseStats p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 8px;
   margin: 0;
+  background-color: var(--main-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 10px;
   color: var(--secondary-text);
-  font-size: 15px;
+  min-width: 0;
+  width: 100%;
 }
-.exerciseCard span {
+
+.exerciseCard .exerciseStats svg {
+  color: var(--purple-accent);
+  font-size: 20px;
+}
+
+.exerciseCard .exerciseStats span {
   color: var(--main-text);
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 17px;
+  font-weight: 700;
 }
+
 button {
   background-color: var(--purple-accent);
   border: none;
@@ -349,7 +406,8 @@ button:hover {
   right: 20px;
 }
 .exerciseCard .deletButton:hover {
-  color: var(--main-text);
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
   transform: scale(1.1);
 }
 
@@ -388,12 +446,15 @@ button:hover {
   }
 
   .exerciseCard {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 20px 50px 20px 20px;
   }
   .exerciseCard h2 {
     font-size: 19px;
     padding-right: 15px;
+  }
+  .exerciseCard .exerciseStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   button {
     width: 100%;
@@ -401,11 +462,12 @@ button:hover {
   }
 
   #carouselSection {
-    padding: 0 10px;
-    gap: 15px;
+    padding: 0px;
+    gap: 5px;
     width: 100%;
   }
 }
+
 @media (max-width: 360px) {
   .exerciseCard {
     padding: 20px 45px 20px 15px;

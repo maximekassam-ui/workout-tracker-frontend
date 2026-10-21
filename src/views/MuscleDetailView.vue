@@ -234,24 +234,6 @@ h3 {
   gap: 10px;
 }
 
-.ppl {
-  background-color: #8b5cf622;
-  border-color: #8b5cf6;
-  color: #a78bfa;
-}
-
-.upperLower {
-  background-color: #16a34a22;
-  border-color: #16a34a;
-  color: #4ade80;
-}
-
-.fullBody {
-  background-color: #f59e0b22;
-  border-color: #f59e0b;
-  color: #fbbf24;
-}
-
 /* Media Query ----------- */
 
 @media (max-width: 1000px) {

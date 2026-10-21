@@ -20,11 +20,16 @@ import {
   faChevronRight,
   faCircle,
   faClipboardList,
+  faClock,
   faDumbbell,
   faEye,
   faEyeSlash,
+  faLayerGroup,
+  faMale,
   faPlusCircle,
+  faRoute,
   faSignOutAlt,
+  faSync,
   faTasks,
   faTimes,
   faTrash,
@@ -56,6 +61,11 @@ library.add(
   faBookOpen,
   faTasks,
   faHeart,
+  faLayerGroup,
+  faSync,
+  faClock,
+  faRoute,
+  faMale,
 );
 
 const app = createApp(App);
