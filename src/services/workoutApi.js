@@ -10,13 +10,13 @@ const getCurrentWorkout = async (userToken) => {
       return null;
     }
 
+    if (!response.ok) {
+      throw new Error("Impossible de récupérer la séance en cours.");
+    }
     const result = await response.json();
-
-    console.log("RESULT :", result);
-
     return result;
   } catch (error) {
-    console.log(error.message);
+    throw error;
   }
 };
 
@@ -32,4 +32,25 @@ const getWorkoutHistory = async (userToken) => {
   }
 };
 
-export { getCurrentWorkout, getWorkoutHistory };
+const startWorkout = async (userToken, workoutTemplateId) => {
+  try {
+    const response = await fetch(`${API_URL}/api/workouts`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ workoutTemplateId: workoutTemplateId }),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message);
+    }
+    return result;
+  } catch (error) {
+    console.log(error.message);
+    throw error;
+  }
+};
+
+export { getCurrentWorkout, getWorkoutHistory, startWorkout };

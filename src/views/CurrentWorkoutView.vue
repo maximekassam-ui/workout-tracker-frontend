@@ -383,9 +383,7 @@ form > div {
   display: flex;
   justify-content: start;
 }
-form div:last-of-type {
-  /* border: solid red 2px; */
-}
+
 label {
   display: block;
   width: 100px;
